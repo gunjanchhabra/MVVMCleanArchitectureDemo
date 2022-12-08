@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/product_graph"
+    app:startDestination="@id/product_list_fragment">
+
+    <fragment
+        android:id="@+id/product_list_fragment"
+        android:name="com.example.kotlinmvvmcode.view.fragment.ProductListFragment"
+        android:label="ProductListFragment">
+        <action
+            android:id="@+id/product_list_fragment_to_product_detail_fragment"
+            app:destination="@id/product_detail_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/product_detail_fragment"
+        android:name="com.example.kotlinmvvmcode.view.fragment.ProductDetailFragment"
+        android:label="ProductDetailFragment">
+
+    </fragment>
+
+</navigation>
