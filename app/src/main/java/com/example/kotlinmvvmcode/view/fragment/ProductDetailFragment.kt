@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.kotlinmvvmcode.MyApplication
 import com.example.kotlinmvvmcode.databinding.FragmentProductDetailBinding
+import com.example.kotlinmvvmcode.di.viewmodel.ViewModelFactory
 import com.example.kotlinmvvmcode.utils.Status
 import com.example.kotlinmvvmcode.view.viewmodel.ProductDetailViewModel
 import kotlinx.coroutines.flow.collect
@@ -20,7 +22,9 @@ class ProductDetailFragment : Fragment() {
     lateinit var binding : FragmentProductDetailBinding
 
     @Inject
-    lateinit var viewModel: ProductDetailViewModel
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val viewModel: ProductDetailViewModel by viewModels { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +44,7 @@ class ProductDetailFragment : Fragment() {
         viewModel.getDetailOfProduct(arguments?.getInt("ID") ?: 0)
 
         lifecycleScope.launch {
-            viewModel._productDetailStateFlow.collect{
+            viewModel.productDetailStateFlow.collect{
                 when(it.status){
                     Status.LOADING -> {
                         binding.progressDialog.visibility = View.VISIBLE
@@ -60,6 +64,6 @@ class ProductDetailFragment : Fragment() {
                 }
             }
         }
-
     }
+
 }

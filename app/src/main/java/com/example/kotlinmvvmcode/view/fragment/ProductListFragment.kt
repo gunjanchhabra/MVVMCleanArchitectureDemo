@@ -6,34 +6,40 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.kotlinmvvmcode.MyApplication
 import com.example.kotlinmvvmcode.ProductsAdapter
 import com.example.kotlinmvvmcode.R
 import com.example.kotlinmvvmcode.databinding.FragmentProductListBinding
-import com.example.kotlinmvvmcode.datamodel.model.ProductItemModel
 import com.example.kotlinmvvmcode.utils.Status
 import com.example.kotlinmvvmcode.view.viewmodel.ProductListViewModel
-import kotlinx.coroutines.flow.collect
+import com.example.kotlinmvvmcode.di.viewmodel.ViewModelFactory
+import com.example.kotlinmvvmcode.view.model.ProductListUiModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProductListFragment : Fragment() {
-    lateinit var binding : FragmentProductListBinding
+    lateinit var binding: FragmentProductListBinding
 
     @Inject
-    lateinit var productListViewModel: ProductListViewModel
+    lateinit var viewModelFactory: ViewModelFactory
 
-    @Inject
-    lateinit var productsAdapter : ProductsAdapter
+    private val productListViewModel: ProductListViewModel by viewModels { viewModelFactory }
+
+    private lateinit var productsAdapter: ProductsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (requireContext().applicationContext as MyApplication).appComponent.inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentProductListBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -41,13 +47,14 @@ class ProductListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         productListViewModel.getProductsList()
+        productsAdapter = ProductsAdapter()
         productsAdapter.onItemClicked = {
             navigateToNextScreen(it)
         }
 
         lifecycleScope.launch {
-            productListViewModel._productListStateFlow.collect{
-                when(it.status){
+            productListViewModel.productListStateFlow.collect {
+                when (it.status) {
                     Status.LOADING -> {
                         binding.progressDialog.visibility = View.VISIBLE
                     }
@@ -69,9 +76,11 @@ class ProductListFragment : Fragment() {
         }
     }
 
-    private fun navigateToNextScreen(it: ProductItemModel) {
+    private fun navigateToNextScreen(it: ProductListUiModel) {
         val bundle = Bundle()
-        bundle.putInt("ID", it.id)
+        bundle.apply {
+            bundle.putInt("ID", it.id)
+        }
         binding.root.findNavController().navigate(R.id.product_list_fragment_to_product_detail_fragment, bundle)
     }
 }

@@ -16,4 +16,5 @@ class ProductActivity : AppCompatActivity() {
         (application as MyApplication).appComponent.inject(this)
         Navigation.findNavController(this, R.id.content_fragment).setGraph(R.navigation.product_graph)
     }
+
 }

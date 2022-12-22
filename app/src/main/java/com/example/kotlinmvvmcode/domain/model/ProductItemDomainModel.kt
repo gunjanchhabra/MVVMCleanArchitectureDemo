@@ -1,7 +1,7 @@
-package com.example.kotlinmvvmcode.datamodel.model
+package com.example.kotlinmvvmcode.domain.model
 
 
-data class ProductItemModel(
+data class ProductItemDomainModel(
     var apiFeaturedImage: String ? = "",
     val brand: String ? = "",
     val category: String ?= "",
@@ -14,7 +14,7 @@ data class ProductItemModel(
     val price: String ? = "",
     val priceSign: String ? = "",
     val productApiUrl: String ? = "",
-    val productColors: List<ProductColorModel>,
+    val productColors: List<ProductColorDomainModel>,
     val productLink: String ? = "",
     val productType: String? = "",
     val rating: Double ? = 0.0,

@@ -1,15 +1,13 @@
 package com.example.kotlinmvvmcode.domain.repository
 
-import com.example.kotlinmvvmcode.datamodel.data.ProductsDataModel
-import com.example.kotlinmvvmcode.datamodel.model.ProductItemModel
+import com.example.kotlinmvvmcode.domain.model.ProductItemDomainModel
 import com.example.kotlinmvvmcode.utils.ApiResponse
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 
 interface ProductRepo {
 
-    suspend fun fetchProductsList(): Flow<ApiResponse<List<ProductItemModel>?>>
+    fun fetchProductsList(): Flow<ApiResponse<List<ProductItemDomainModel>?>>
 
-    suspend fun fetchProductDetail(id: Int) : Flow<ApiResponse<ProductItemModel>>
+    fun fetchProductDetail(id: Int) : Flow<ApiResponse<ProductItemDomainModel>>
 
 }

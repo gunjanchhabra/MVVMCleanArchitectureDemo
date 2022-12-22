@@ -12,9 +12,8 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
-class ProductListUseCaseImplTest{
-
-    lateinit var productListUseCase: ProductListUseCase
+class ProductDetailUseCaseTest{
+    lateinit var productDetailUseCase: ProductDetailUseCase
 
     @RelaxedMockK
     lateinit var productListRepo: ProductRepo
@@ -23,28 +22,27 @@ class ProductListUseCaseImplTest{
     @Before
     fun setup() {
         MockKAnnotations.init(this,true)
-        productListUseCase = ProductListUseCase(productListRepo)
+        productDetailUseCase = ProductDetailUseCase(productListRepo)
     }
 
     @Test
-    fun fetchProducts_success() = runBlocking {
-        val productDomainResponse = ApiResponse.success(TestData.mappedResponseProductList())
-        coEvery { productListRepo.fetchProductsList() } returns flowOf(productDomainResponse)
-        productListUseCase().collect{
+    fun fetchProductDetail_success() = runBlocking {
+        val productDomainResponse = ApiResponse.success(TestData.productItemModel)
+        coEvery { productListRepo.fetchProductDetail(1) } returns flowOf(productDomainResponse)
+        productDetailUseCase(1).collect{
             assertNotNull(it)
             assertEquals(productDomainResponse, it)
         }
     }
 
     @Test
-    fun fetchProducts_error() = runBlocking{
+    fun fetchProductDetail_error() = runBlocking{
         val errorString = "Internal Server Error"
         val productResponse = ApiResponse.error(null, errorString)
-        coEvery { productListRepo.fetchProductsList() } returns flowOf(productResponse)
-        productListUseCase().collect{
+        coEvery { productListRepo.fetchProductDetail(1) } returns flowOf(productResponse)
+        productDetailUseCase(1).collect{
             assertNull(it.data)
             assertEquals(errorString, it.message)
         }
     }
-
 }

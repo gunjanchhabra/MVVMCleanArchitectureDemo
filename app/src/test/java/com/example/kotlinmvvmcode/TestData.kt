@@ -2,11 +2,12 @@ package com.example.kotlinmvvmcode
 
 import com.example.kotlinmvvmcode.datamodel.data.ProductColorDataModel
 import com.example.kotlinmvvmcode.datamodel.data.ProductsItemDataModel
-import com.example.kotlinmvvmcode.datamodel.model.ProductColorModel
-import com.example.kotlinmvvmcode.datamodel.model.ProductItemModel
+import com.example.kotlinmvvmcode.domain.model.ProductColorDomainModel
+import com.example.kotlinmvvmcode.domain.model.ProductItemDomainModel
+import com.example.kotlinmvvmcode.view.model.ProductListUiModel
 
 object TestData {
-    val productItemModel = ProductItemModel(
+    val productItemModel = ProductItemDomainModel(
         "", "", "", "", "",
         "", 0, "", "",
         "", "", "", listOf(), "", "",
@@ -20,7 +21,12 @@ object TestData {
         0.0, listOf(), "", ""
     )
 
-    val productsColorModel = ProductColorModel("","")
+    val productItemUiModel = ProductListUiModel(
+        "", "", 0, "", "",
+        ""
+    )
+
+    val productsColorModel = ProductColorDomainModel("","")
     val productColorDataModel = ProductColorDataModel("","")
 
      fun mappedResponseProductList() = listOf(
@@ -30,4 +36,6 @@ object TestData {
      fun networkResponseProductList() = listOf(
         productsItemDataModel
     )
+
+    fun mappedUiProductList() = listOf(productItemUiModel)
 }

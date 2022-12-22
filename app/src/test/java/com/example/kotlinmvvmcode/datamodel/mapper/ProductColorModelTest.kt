@@ -1,12 +1,12 @@
 package com.example.kotlinmvvmcode.datamodel.mapper
 
 import com.example.kotlinmvvmcode.TestData
+import com.example.kotlinmvvmcode.domain.model.mapper.ProductsColorMapper
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.spyk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith

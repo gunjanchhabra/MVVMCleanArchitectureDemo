@@ -2,38 +2,40 @@ package com.example.kotlinmvvmcode.view.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kotlinmvvmcode.datamodel.model.ProductItemModel
-import com.example.kotlinmvvmcode.domain.usecase.ProductUseCase
+import com.example.kotlinmvvmcode.domain.usecase.ProductDetailUseCase
 import com.example.kotlinmvvmcode.utils.ApiResponse
 import com.example.kotlinmvvmcode.utils.Status
+import com.example.kotlinmvvmcode.view.model.ProductListUiModel
+import com.example.kotlinmvvmcode.view.model.mapper.ProductListUiMapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ProductDetailViewModel @Inject constructor(val productListUseCase: ProductUseCase)  : ViewModel(){
+class ProductDetailViewModel @Inject constructor(val productDetailUseCase: ProductDetailUseCase, private val productListMapper: ProductListUiMapper)  : ViewModel(){
 
-    private val productDetailStateFlow : MutableStateFlow<ApiResponse<ProductItemModel>> = MutableStateFlow(
+    private val _productDetailStateFlow : MutableStateFlow<ApiResponse<ProductListUiModel>> = MutableStateFlow(
         ApiResponse.loading(null)
     )
-    val _productDetailStateFlow : StateFlow<ApiResponse<ProductItemModel>> = productDetailStateFlow
+    val productDetailStateFlow : StateFlow<ApiResponse<ProductListUiModel>> = _productDetailStateFlow
 
 
     fun getDetailOfProduct( id : Int) {
         viewModelScope.launch {
-            productListUseCase.fetchProductDetail(id).catch {
+            productDetailUseCase(id).catch {
                 ApiResponse(Status.ERROR, null, it.message)
             }.collect{
                 when (it.status) {
                     Status.SUCCESS -> {
-                        productDetailStateFlow.value = ApiResponse(Status.SUCCESS, it.data, "")
+                        _productDetailStateFlow.value = ApiResponse(Status.SUCCESS,
+                            it.data?.let { productItemModel -> productListMapper.mapFromModel(productItemModel) }, "")
                     }
                     Status.ERROR -> {
-                        productDetailStateFlow.value = ApiResponse(Status.ERROR, null, it.message)
+                        _productDetailStateFlow.value = ApiResponse(Status.ERROR, null, it.message)
                     }
                     Status.LOADING -> {
-                        productDetailStateFlow.value = ApiResponse(Status.LOADING, null, null)
+                        _productDetailStateFlow.value = ApiResponse(Status.LOADING, null, null)
                     }
                 }
             }

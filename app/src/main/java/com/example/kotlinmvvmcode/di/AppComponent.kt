@@ -1,6 +1,7 @@
 package com.example.kotlinmvvmcode.di
 
 import android.content.Context
+import com.example.kotlinmvvmcode.di.viewmodel.ViewModelModule
 import com.example.kotlinmvvmcode.view.activity.ProductActivity
 import com.example.kotlinmvvmcode.view.fragment.ProductDetailFragment
 import com.example.kotlinmvvmcode.view.fragment.ProductListFragment
@@ -9,7 +10,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ApiModule::class, UseCaseModule::class, RepoModule::class])
+@Component(modules = [ApiModule::class, RepoModule::class, ViewModelModule::class])
 interface AppComponent{
 
     fun inject(mainActivity: ProductActivity)

@@ -5,16 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kotlinmvvmcode.databinding.AdapterProuctsBinding
-import com.example.kotlinmvvmcode.datamodel.model.ProductItemModel
-import javax.inject.Inject
+import com.example.kotlinmvvmcode.view.model.ProductListUiModel
 
-class ProductsAdapter @Inject constructor() : RecyclerView.Adapter<ProductViewHolder>() {
+class ProductsAdapter : RecyclerView.Adapter<ProductViewHolder>() {
 
-    private var productItemList = mutableListOf<ProductItemModel>()
+    private var productItemList = mutableListOf<ProductListUiModel>()
 
-    var onItemClicked : ((productItem : ProductItemModel) -> Unit) ?= null
+    var onItemClicked : ((productItem : ProductListUiModel) -> Unit) ?= null
 
-    fun setProductList(productItem: MutableList<ProductItemModel>) {
+    fun setProductList(productItem: MutableList<ProductListUiModel>) {
         this.productItemList = productItem
     }
 
@@ -34,7 +33,6 @@ class ProductsAdapter @Inject constructor() : RecyclerView.Adapter<ProductViewHo
         holder.itemView.setOnClickListener {
             onItemClicked?.invoke(product)
         }
-
     }
 
     override fun getItemCount(): Int {

@@ -2,6 +2,8 @@ package com.example.kotlinmvvmcode.datamodel.mapper
 
 import com.example.kotlinmvvmcode.TestData.productItemModel
 import com.example.kotlinmvvmcode.TestData.productsItemDataModel
+import com.example.kotlinmvvmcode.domain.model.mapper.ProductsColorMapper
+import com.example.kotlinmvvmcode.domain.model.mapper.ProductsItemMapper
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -10,10 +12,8 @@ import io.mockk.spyk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

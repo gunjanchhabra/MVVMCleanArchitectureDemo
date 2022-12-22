@@ -1,8 +1,7 @@
 package com.example.kotlinmvvmcode.domain.repository
 
-import android.util.Log
-import com.example.kotlinmvvmcode.datamodel.mapper.ProductsItemMapper
-import com.example.kotlinmvvmcode.datamodel.model.ProductItemModel
+import com.example.kotlinmvvmcode.domain.model.mapper.ProductsItemMapper
+import com.example.kotlinmvvmcode.domain.model.ProductItemDomainModel
 import com.example.kotlinmvvmcode.domain.ApiService
 import com.example.kotlinmvvmcode.utils.*
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +12,7 @@ import javax.inject.Inject
 
 class ProductRepoImpl @Inject constructor(val apiService: ApiService, val productsItemMapper: ProductsItemMapper) : ProductRepo {
 
-    override suspend fun fetchProductsList(): Flow<ApiResponse<List<ProductItemModel>?>> = flow {
+    override fun fetchProductsList(): Flow<ApiResponse<List<ProductItemDomainModel>?>> = flow {
         emit(ApiResponse.loading(null))
         try {
             val response = apiService.getProducts()
@@ -33,7 +32,7 @@ class ProductRepoImpl @Inject constructor(val apiService: ApiService, val produc
         }
     }
 
-    override suspend fun fetchProductDetail(id: Int) : Flow<ApiResponse<ProductItemModel>> = flow {
+    override fun fetchProductDetail(id: Int) : Flow<ApiResponse<ProductItemDomainModel>> = flow {
         emit(ApiResponse.loading(null))
         try {
             val response = apiService.getProductDetail(id)
