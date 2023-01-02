@@ -1,4 +1,4 @@
-package com.example.kotlinmvvmcode.datamodel.mapper
+package com.example.kotlinmvvmcode.data.mapper
 
 import com.example.kotlinmvvmcode.TestData.productItemModel
 import com.example.kotlinmvvmcode.TestData.productsItemDataModel
@@ -14,7 +14,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,11 +30,9 @@ class ProductsItemMapperTest {
 
     @Before
     fun setup() {
-        MockKAnnotations.init(this,true)
+        MockKAnnotations.init(this, true)
         Dispatchers.setMain(testDispatcher)
     }
-
-
 
     @Test
     fun getMapper_successTest() = runTest {

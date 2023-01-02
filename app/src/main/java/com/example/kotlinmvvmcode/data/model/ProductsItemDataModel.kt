@@ -1,4 +1,4 @@
-package com.example.kotlinmvvmcode.datamodel.data
+package com.example.kotlinmvvmcode.data.model
 
 import com.google.gson.annotations.SerializedName
 

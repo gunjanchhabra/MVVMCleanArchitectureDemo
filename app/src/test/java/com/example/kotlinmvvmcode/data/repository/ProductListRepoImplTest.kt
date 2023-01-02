@@ -1,19 +1,21 @@
-package com.example.kotlinmvvmcode.domain.repository
+package com.example.kotlinmvvmcode.data.repository
 
 import com.example.kotlinmvvmcode.TestData.mappedResponseProductList
 import com.example.kotlinmvvmcode.TestData.networkResponseProductList
 import com.example.kotlinmvvmcode.TestData.productItemModel
 import com.example.kotlinmvvmcode.TestData.productsItemDataModel
+import com.example.kotlinmvvmcode.data.network.ApiService
 import com.example.kotlinmvvmcode.domain.model.mapper.ProductsItemMapper
-import com.example.kotlinmvvmcode.domain.ApiService
-import com.example.kotlinmvvmcode.utils.Status
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,7 +27,7 @@ import retrofit2.Response
 class ProductListRepoImplTest {
 
     @MockK
-    lateinit var apiService : ApiService
+    lateinit var apiService: ApiService
 
     @MockK
     lateinit var productItemMapper: ProductsItemMapper
@@ -34,7 +36,7 @@ class ProductListRepoImplTest {
 
     @Before
     fun setUp() {
-        MockKAnnotations.init(this,true)
+        MockKAnnotations.init(this, true)
         productListRepo = ProductRepoImpl(apiService, productItemMapper)
     }
 
@@ -58,7 +60,8 @@ class ProductListRepoImplTest {
     fun fetchProductsList_error() = runBlocking {
         coEvery { apiService.getProducts() } returns Response.error(404, mockk(relaxed = true))
         val result = productListRepo.fetchProductsList().last()
-        assertEquals(Status.ERROR, result.status)
+        assertNull(result.data)
+        assertEquals(result.message, "Response.error()")
     }
 
     @Test
@@ -74,9 +77,12 @@ class ProductListRepoImplTest {
 
     @Test
     fun fetchProductDetail_error() = runBlocking {
-        coEvery { apiService.getProductDetail(1) } returns Response.error(404, mockk(relaxed = true))
+        coEvery { apiService.getProductDetail(1) } returns Response.error(
+            404,
+            mockk(relaxed = true)
+        )
         val result = productListRepo.fetchProductDetail(1).last()
-        assertEquals(Status.ERROR, result.status)
+        assertNull(result.data)
+        assertEquals("Response.error()", result.message)
     }
-
 }

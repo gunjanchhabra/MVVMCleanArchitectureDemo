@@ -2,10 +2,9 @@ package com.example.kotlinmvvmcode.view.model
 
 
 data class ProductListUiModel(
-    var apiFeaturedImage: String ? = "",
-    val description: String ? = "",
+    var apiFeaturedImage: String? = "",
+    val description: String? = "",
     val id: Int,
-    val name: String ? = "",
-    val price: String ? = "",
-    val priceSign: String ? = ""
+    val name: String? = "",
+    val price: String? = ""
 )

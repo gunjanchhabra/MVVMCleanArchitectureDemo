@@ -11,14 +11,14 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [ApiModule::class, RepoModule::class, ViewModelModule::class])
-interface AppComponent{
+interface AppComponent {
 
     fun inject(mainActivity: ProductActivity)
     fun inject(productListFragment: ProductListFragment)
     fun inject(productDetailFragment: ProductDetailFragment)
 
-   @Component.Factory
-    interface FactoryInstance{
-        fun createInstance(@BindsInstance context: Context) : AppComponent
+    @Component.Factory
+    interface FactoryInstance {
+        fun createInstance(@BindsInstance context: Context): AppComponent
     }
 }

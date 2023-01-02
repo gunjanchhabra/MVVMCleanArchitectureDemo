@@ -1,4 +1,4 @@
-package com.example.kotlinmvvmcode.datamodel.mapper
+package com.example.kotlinmvvmcode.data.mapper
 
 import com.example.kotlinmvvmcode.TestData
 import com.example.kotlinmvvmcode.domain.model.mapper.ProductsColorMapper
@@ -7,14 +7,14 @@ import io.mockk.confirmVerified
 import io.mockk.spyk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
-class ProductColorModelTest{
+class ProductColorModelTest {
     @Test
     fun getMapper_successTest() = runBlocking {
         val input = TestData.productColorDataModel

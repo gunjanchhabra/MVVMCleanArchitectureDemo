@@ -1,7 +1,7 @@
 package com.example.kotlinmvvmcode.view.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.example.kotlinmvvmcode.MyApplication
 import com.example.kotlinmvvmcode.R
@@ -14,7 +14,7 @@ class ProductActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         (application as MyApplication).appComponent.inject(this)
-        Navigation.findNavController(this, R.id.content_fragment).setGraph(R.navigation.product_graph)
+        Navigation.findNavController(this, R.id.content_fragment)
+            .setGraph(R.navigation.product_graph)
     }
-
 }

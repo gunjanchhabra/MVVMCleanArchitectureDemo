@@ -6,7 +6,7 @@ import com.example.kotlinmvvmcode.di.DaggerAppComponent
 
 class MyApplication : Application() {
 
-    val appComponent : AppComponent by lazy{
+    val appComponent: AppComponent by lazy {
         DaggerAppComponent.factory().createInstance(applicationContext)
     }
 }

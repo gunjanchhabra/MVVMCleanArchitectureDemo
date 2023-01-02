@@ -15,6 +15,7 @@
         <activity
             android:name=".view.activity.ProductActivity"
             android:theme="@style/Theme.AppCompat.Light"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

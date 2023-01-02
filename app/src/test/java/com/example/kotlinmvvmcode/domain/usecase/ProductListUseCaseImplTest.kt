@@ -1,7 +1,7 @@
 package com.example.kotlinmvvmcode.domain.usecase
 
 import com.example.kotlinmvvmcode.TestData
-import com.example.kotlinmvvmcode.domain.repository.ProductRepo
+import com.example.kotlinmvvmcode.data.repository.ProductRepo
 import com.example.kotlinmvvmcode.utils.ApiResponse
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -12,7 +12,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
-class ProductListUseCaseImplTest{
+class ProductListUseCaseImplTest {
 
     lateinit var productListUseCase: ProductListUseCase
 
@@ -22,29 +22,27 @@ class ProductListUseCaseImplTest{
 
     @Before
     fun setup() {
-        MockKAnnotations.init(this,true)
+        MockKAnnotations.init(this, true)
         productListUseCase = ProductListUseCase(productListRepo)
     }
 
     @Test
     fun fetchProducts_success() = runBlocking {
-        val productDomainResponse = ApiResponse.success(TestData.mappedResponseProductList())
+        val productDomainResponse = ApiResponse.Success(TestData.mappedResponseProductList())
         coEvery { productListRepo.fetchProductsList() } returns flowOf(productDomainResponse)
-        productListUseCase().collect{
+        productListUseCase().collect {
             assertNotNull(it)
             assertEquals(productDomainResponse, it)
         }
     }
 
     @Test
-    fun fetchProducts_error() = runBlocking{
+    fun fetchProducts_error() = runBlocking {
         val errorString = "Internal Server Error"
-        val productResponse = ApiResponse.error(null, errorString)
-        coEvery { productListRepo.fetchProductsList() } returns flowOf(productResponse)
-        productListUseCase().collect{
+        coEvery { productListRepo.fetchProductsList() } returns flowOf(ApiResponse.Error(errorString))
+        productListUseCase().collect {
             assertNull(it.data)
             assertEquals(errorString, it.message)
         }
     }
-
 }

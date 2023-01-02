@@ -1,16 +1,12 @@
 package com.example.kotlinmvvmcode.utils
 
 
+sealed class ApiResponse<T>(val data: T? = null, val message: String? = null) {
 
-data class ApiResponse<out T>(val status : Status, val data : T?,val message : String?) {
-    companion object{
-        fun <T> success(data : T) : ApiResponse<T> =
-            ApiResponse(status = Status.SUCCESS, data = data, message = null)
+    class Success<T>(data: T) : ApiResponse<T>(data = data)
 
-        fun <T> error(data : T?, message: String?):ApiResponse<T> =
-            ApiResponse(status = Status.ERROR, data = data, message = message)
+    class Error<T>(message: String?) : ApiResponse<T>(message = message)
 
-        fun <T> loading(data : T?) : ApiResponse<T> =
-            ApiResponse(status = Status.LOADING, data, null)
-    }
+    class Loading<T>() : ApiResponse<T>()
 }
+

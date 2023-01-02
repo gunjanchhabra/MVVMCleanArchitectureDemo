@@ -1,6 +1,6 @@
 package com.example.kotlinmvvmcode.di
 
-import com.example.kotlinmvvmcode.domain.ApiService
+import com.example.kotlinmvvmcode.data.network.ApiService
 import com.example.kotlinmvvmcode.utils.Constants
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -23,7 +23,6 @@ class ApiModule {
             .client(okHttpClient)
             .build()
     }
-
 
     @Provides
     @Singleton

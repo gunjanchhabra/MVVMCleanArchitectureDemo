@@ -1,20 +1,20 @@
 package com.example.kotlinmvvmcode.view.viewmodel
 
-import androidx.lifecycle.Observer
 import com.example.kotlinmvvmcode.Dispatcher
 import com.example.kotlinmvvmcode.TestData
-import com.example.kotlinmvvmcode.domain.model.ProductItemDomainModel
 import com.example.kotlinmvvmcode.domain.usecase.ProductListUseCase
 import com.example.kotlinmvvmcode.utils.ApiResponse
-import com.example.kotlinmvvmcode.utils.Status
-import com.example.kotlinmvvmcode.view.model.ProductListUiModel
 import com.example.kotlinmvvmcode.view.model.mapper.ProductListUiMapper
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
-import org.junit.*
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class ProductListViewModelTest {
@@ -39,27 +39,25 @@ class ProductListViewModelTest {
 
     @Test
     fun getProductsList_success() = runBlocking {
-        val productDomainResponse = ApiResponse.success(TestData.mappedResponseProductList())
+        val productDomainResponse = ApiResponse.Success(TestData.mappedResponseProductList())
         val productUiMappedResponse = TestData.mappedUiProductList()
         coEvery { productListUseCase() } returns flowOf(productDomainResponse)
-        coEvery { productListUiMapper.mapFromModel(any()) } returns productUiMappedResponse.first()
+        coEvery { productListUiMapper.map(any()) } returns productUiMappedResponse.toMutableList()
         productListViewModel.getProductsList()
         Assert.assertEquals(
-            ApiResponse(Status.SUCCESS, productUiMappedResponse, ""),
-            productListViewModel.productListStateFlow.value
+            productUiMappedResponse,
+            productListViewModel.productListStateFlow.value.data
         )
     }
 
     @Test
     fun getProductsList_fail() = runBlocking {
         val errorMsg = "Internal Server Error"
-        val productDomainResponse = ApiResponse.error(null, errorMsg)
-        coEvery { productListUseCase() } returns flowOf(productDomainResponse)
+        coEvery { productListUseCase() } returns flowOf(ApiResponse.Error(errorMsg))
         productListViewModel.getProductsList()
         Assert.assertEquals(
-            ApiResponse(Status.ERROR, null, errorMsg),
-            productListViewModel.productListStateFlow.value
+            errorMsg,
+            productListViewModel.productListStateFlow.value.message
         )
     }
-
 }
