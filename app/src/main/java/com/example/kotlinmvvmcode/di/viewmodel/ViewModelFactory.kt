@@ -13,5 +13,4 @@ class ViewModelFactory @Inject constructor(
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
         viewModels[modelClass]?.get() as T
-
 }

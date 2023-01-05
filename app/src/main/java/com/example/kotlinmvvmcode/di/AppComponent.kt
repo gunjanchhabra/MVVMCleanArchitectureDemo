@@ -10,7 +10,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ApiModule::class, RepoModule::class, ViewModelModule::class])
+@Component(modules = [ApiModule::class, RepoModule::class, ViewModelModule::class, DispatcherModule::class])
 interface AppComponent {
 
     fun inject(mainActivity: ProductActivity)

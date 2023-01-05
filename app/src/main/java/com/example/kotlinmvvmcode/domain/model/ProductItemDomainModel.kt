@@ -2,7 +2,7 @@ package com.example.kotlinmvvmcode.domain.model
 
 
 data class ProductItemDomainModel(
-    var apiFeaturedImage: String? = "",
+    val apiFeaturedImage: String? = "",
     val brand: String? = "",
     val category: String? = "",
     val createdAt: String? = "",

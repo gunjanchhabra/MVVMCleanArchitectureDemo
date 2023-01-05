@@ -48,7 +48,7 @@ class ProductDetailViewModelTest {
         productDetailViewModel.getDetailOfProduct(1)
         assertEquals(
             productMappedUiResponse,
-            productDetailViewModel.productDetailStateFlow.value.data
+            (productDetailViewModel.productDetailStateFlow.value as ApiResponse.Success).data
         )
     }
 
@@ -57,6 +57,6 @@ class ProductDetailViewModelTest {
         val errorMsg = "Internal Server Error"
         coEvery { productListUseCase(1) } returns flowOf(ApiResponse.Error(errorMsg))
         productDetailViewModel.getDetailOfProduct(1)
-        assertEquals(errorMsg, productDetailViewModel.productDetailStateFlow.value.message)
+        assertEquals(errorMsg, (productDetailViewModel.productDetailStateFlow.value as ApiResponse.Error).message)
     }
 }

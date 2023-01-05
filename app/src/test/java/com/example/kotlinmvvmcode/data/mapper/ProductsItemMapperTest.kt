@@ -2,8 +2,6 @@ package com.example.kotlinmvvmcode.data.mapper
 
 import com.example.kotlinmvvmcode.TestData.productItemModel
 import com.example.kotlinmvvmcode.TestData.productsItemDataModel
-import com.example.kotlinmvvmcode.domain.model.mapper.ProductsColorMapper
-import com.example.kotlinmvvmcode.domain.model.mapper.ProductsItemMapper
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -41,11 +39,11 @@ class ProductsItemMapperTest {
 
         val mapper = spyk(ProductsItemMapper(colorMapper))
 
-        val result = mapper.mapFromModel(input)
+        val result = mapper.mapToDomain(input)
 
         assertEquals(result, output)
 
-        coVerify(atMost = 1) { mapper.mapFromModel(input) }
+        coVerify(atMost = 1) { mapper.mapToDomain(input) }
 
         confirmVerified(mapper)
     }

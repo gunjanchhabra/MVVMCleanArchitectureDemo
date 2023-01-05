@@ -9,7 +9,8 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import com.example.kotlinmvvmcode.MyApplication
@@ -55,24 +56,27 @@ class ProductListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun fetchProductList() {
         productListViewModel.viewModelScope.launch {
-            productListViewModel.productListStateFlow.collect { result ->
-                when (result) {
-                    is ApiResponse.Loading -> {
-                        binding.progressDialog.visibility = View.VISIBLE
-                    }
-                    is ApiResponse.Success -> {
-                        binding.progressDialog.visibility = View.GONE
-                        result.data?.let { products ->
-                            binding.rvProducts.apply {
-                                productsAdapter.setProductList(products)
-                                this.adapter = productsAdapter
-                                binding.svProducts.setOnQueryTextListener(this@ProductListFragment)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                productListViewModel.productListStateFlow.collect { result ->
+                    when (result) {
+                        is ApiResponse.Loading -> {
+                            binding.progressDialog.visibility = View.VISIBLE
+                        }
+                        is ApiResponse.Success -> {
+                            binding.progressDialog.visibility = View.GONE
+                            result.data.let { products ->
+                                binding.rvProducts.apply {
+                                    productsAdapter.setProductList(products)
+                                    this.adapter = productsAdapter
+                                    binding.svProducts.setOnQueryTextListener(this@ProductListFragment)
+                                }
                             }
                         }
-                    }
-                    is ApiResponse.Error -> {
-                        binding.progressDialog.visibility = View.GONE
-                        Toast.makeText(requireActivity(), result.message, Toast.LENGTH_LONG).show()
+                        is ApiResponse.Error -> {
+                            binding.progressDialog.visibility = View.GONE
+                            Toast.makeText(requireActivity(), result.message, Toast.LENGTH_LONG)
+                                .show()
+                        }
                     }
                 }
             }

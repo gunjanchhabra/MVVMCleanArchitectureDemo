@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.example.kotlinmvvmcode.MyApplication
 import com.example.kotlinmvvmcode.databinding.FragmentProductDetailBinding
@@ -44,22 +46,25 @@ class ProductDetailFragment : Fragment() {
 
     private fun fetchProductDetail() {
         lifecycleScope.launch {
-            viewModel.productDetailStateFlow.collect { result ->
-                when (result) {
-                    is ApiResponse.Loading -> {
-                        binding.progressDialog.visibility = View.VISIBLE
-                    }
-                    is ApiResponse.Success -> {
-                        binding.progressDialog.visibility = View.GONE
-                        Glide.with(requireContext()).load(result.data?.apiFeaturedImage)
-                            .into(binding.imageview)
-                        binding.name.text = result.data?.name
-                        binding.description.text = result.data?.description
-                        binding.price.text = result.data?.price
-                    }
-                    is ApiResponse.Error -> {
-                        binding.progressDialog.visibility = View.GONE
-                        Toast.makeText(requireActivity(), result.message, Toast.LENGTH_LONG).show()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.productDetailStateFlow.collect { result ->
+                    when (result) {
+                        is ApiResponse.Loading -> {
+                            binding.progressDialog.visibility = View.VISIBLE
+                        }
+                        is ApiResponse.Success -> {
+                            binding.progressDialog.visibility = View.GONE
+                            Glide.with(requireContext()).load(result.data.apiFeaturedImage)
+                                .into(binding.imageview)
+                            binding.name.text = result.data.name
+                            binding.description.text = result.data.description
+                            binding.price.text = result.data.price
+                        }
+                        is ApiResponse.Error -> {
+                            binding.progressDialog.visibility = View.GONE
+                            Toast.makeText(requireActivity(), result.message, Toast.LENGTH_LONG)
+                                .show()
+                        }
                     }
                 }
             }

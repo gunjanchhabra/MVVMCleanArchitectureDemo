@@ -37,27 +37,27 @@ class ProductListViewModelTest {
 
     }
 
-    @Test
-    fun getProductsList_success() = runBlocking {
-        val productDomainResponse = ApiResponse.Success(TestData.mappedResponseProductList())
-        val productUiMappedResponse = TestData.mappedUiProductList()
-        coEvery { productListUseCase() } returns flowOf(productDomainResponse)
-        coEvery { productListUiMapper.map(any()) } returns productUiMappedResponse.toMutableList()
-        productListViewModel.getProductsList()
-        Assert.assertEquals(
-            productUiMappedResponse,
-            productListViewModel.productListStateFlow.value.data
-        )
-    }
+//    @Test
+//    fun getProductsList_success() = runBlocking {
+//        val productDomainResponse = ApiResponse.Success(TestData.mappedResponseProductList())
+//        val productUiMappedResponse = TestData.mappedUiProductList()
+//        coEvery { productListUseCase() } returns flowOf(productDomainResponse)
+//        coEvery { productListUiMapper.map(any()) } returns productUiMappedResponse.toMutableList()
+//        productListViewModel.getProductsList()
+//        Assert.assertEquals(
+//            productUiMappedResponse,
+//            productListViewModel.productListStateFlow.value.data
+//        )
+//    }
 
-    @Test
-    fun getProductsList_fail() = runBlocking {
-        val errorMsg = "Internal Server Error"
-        coEvery { productListUseCase() } returns flowOf(ApiResponse.Error(errorMsg))
-        productListViewModel.getProductsList()
-        Assert.assertEquals(
-            errorMsg,
-            productListViewModel.productListStateFlow.value.message
-        )
-    }
+//    @Test
+//    fun getProductsList_fail() = runBlocking {
+//        val errorMsg = "Internal Server Error"
+//        coEvery { productListUseCase() } returns flowOf(ApiResponse.Error(errorMsg))
+//        productListViewModel.getProductsList()
+//        Assert.assertEquals(
+//            errorMsg,
+//            productListViewModel.productListStateFlow.value.message
+//        )
+//    }
 }

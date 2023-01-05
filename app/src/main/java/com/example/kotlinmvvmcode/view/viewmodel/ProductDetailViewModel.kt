@@ -17,10 +17,9 @@ class ProductDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _productDetailStateFlow =
-        MutableStateFlow<ApiResponse<ProductListUiModel?>>(ApiResponse.Loading())
-    val productDetailStateFlow: StateFlow<ApiResponse<ProductListUiModel?>> =
+        MutableStateFlow<ApiResponse<ProductListUiModel>>(ApiResponse.Loading)
+    val productDetailStateFlow: StateFlow<ApiResponse<ProductListUiModel>> =
         _productDetailStateFlow
-
 
     fun getDetailOfProduct(id: Int) {
         viewModelScope.launch {
@@ -28,13 +27,13 @@ class ProductDetailViewModel @Inject constructor(
                 when (result) {
                     is ApiResponse.Success -> {
                         _productDetailStateFlow.value =
-                            ApiResponse.Success(result.data?.let { productItemDomainModel -> productListMapper mapToUi productItemDomainModel })
+                            ApiResponse.Success(productListMapper mapToUi result.data)
                     }
                     is ApiResponse.Error -> {
                         _productDetailStateFlow.value = ApiResponse.Error(result.message)
                     }
                     is ApiResponse.Loading -> {
-                        _productDetailStateFlow.value = ApiResponse.Loading()
+                        _productDetailStateFlow.value = ApiResponse.Loading
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.example.kotlinmvvmcode.data.repository
+package com.example.kotlinmvvmcode.domain.repository
 
 import com.example.kotlinmvvmcode.domain.model.ProductItemDomainModel
 import com.example.kotlinmvvmcode.utils.ApiResponse

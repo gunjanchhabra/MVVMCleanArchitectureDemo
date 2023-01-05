@@ -1,6 +1,5 @@
 package com.example.kotlinmvvmcode.view.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kotlinmvvmcode.domain.usecase.ProductListUseCase
@@ -18,9 +17,9 @@ class ProductListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _productListStateFlow =
-        MutableStateFlow<ApiResponse<MutableList<ProductListUiModel>?>>(ApiResponse.Loading())
+        MutableStateFlow<ApiResponse<MutableList<ProductListUiModel>>>(ApiResponse.Loading)
 
-    val productListStateFlow: StateFlow<ApiResponse<MutableList<ProductListUiModel>?>> =
+    val productListStateFlow: StateFlow<ApiResponse<MutableList<ProductListUiModel>>> =
         _productListStateFlow
 
     init {
@@ -32,22 +31,14 @@ class ProductListViewModel @Inject constructor(
             productListUseCase().collect { result ->
                 when (result) {
                     is ApiResponse.Loading ->
-                        _productListStateFlow.value = ApiResponse.Loading()
+                        _productListStateFlow.value = ApiResponse.Loading
                     is ApiResponse.Success ->
                         _productListStateFlow.value =
-                            ApiResponse.Success(result.data?.let { productListDomain ->
-                                (productListMapper map productListDomain)
-                            })
+                            ApiResponse.Success(productListMapper map result.data)
                     is ApiResponse.Error ->
                         _productListStateFlow.value = ApiResponse.Error(result.message)
                 }
             }
         }
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("cleared","cleared")
-    }
 }
-

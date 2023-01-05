@@ -1,7 +1,7 @@
 package com.example.kotlinmvvmcode.domain.usecase
 
 import com.example.kotlinmvvmcode.TestData
-import com.example.kotlinmvvmcode.data.repository.ProductRepo
+import com.example.kotlinmvvmcode.domain.repository.ProductRepo
 import com.example.kotlinmvvmcode.utils.ApiResponse
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -41,7 +41,7 @@ class ProductListUseCaseImplTest {
         val errorString = "Internal Server Error"
         coEvery { productListRepo.fetchProductsList() } returns flowOf(ApiResponse.Error(errorString))
         productListUseCase().collect {
-            assertNull(it.data)
+            assertNotNull(it as ApiResponse.Error)
             assertEquals(errorString, it.message)
         }
     }
